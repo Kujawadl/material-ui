@@ -1,15 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { createMuiTheme, withStyles } from '@material-ui/core/styles';
+import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-const styles = {
+const useStyles = makeStyles({
   root: {
     display: 'flex',
   },
-};
+});
 
 const theme = createMuiTheme({
   typography: {
@@ -39,8 +38,8 @@ const theme = createMuiTheme({
   },
 });
 
-function TypographyTheme(props) {
-  const { classes } = props;
+function TypographyTheme() {
+  const classes = useStyles();
 
   const children = (
     <div>
@@ -58,8 +57,4 @@ function TypographyTheme(props) {
   );
 }
 
-TypographyTheme.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(TypographyTheme);
+export default TypographyTheme;

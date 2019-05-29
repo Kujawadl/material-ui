@@ -4,6 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import warning from 'warning';
 import { connect } from 'react-redux';
+import clsx from 'clsx';
 import { withStyles } from '@material-ui/core/styles';
 import Portal from '@material-ui/core/Portal';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -29,6 +30,7 @@ import {
 import compose from 'docs/src/modules/utils/compose';
 import { pageToTitleI18n } from 'docs/src/modules/utils/helpers';
 import { LANGUAGES_IN_PROGRESS } from 'docs/src/modules/constants';
+import Link from 'docs/src/modules/components/Link';
 
 const styles = theme => ({
   header: {
@@ -39,6 +41,29 @@ const styles = theme => ({
   markdownElement: {
     marginBottom: theme.spacing(2),
     padding: theme.spacing(0, 1),
+  },
+  markdownElementBlog: {
+    maxWidth: 700,
+    margin: 'auto',
+    padding: 0,
+    fontSize: theme.typography.pxToRem(18),
+    fontFamily: `Roboto Slab, ${theme.typography.fontFamily}`,
+    fontWeight: 300,
+    '& p, & ul, & ol': {
+      lineHeight: 1.7,
+    },
+    '& strong': {
+      fontWeight: 400,
+      fontFamily: theme.typography.fontFamily,
+    },
+    '& img': {
+      display: 'block',
+      margin: 'auto',
+    },
+    '& .blog-description': {
+      fontSize: theme.typography.pxToRem(14),
+      textAlign: 'center',
+    },
   },
   footer: {
     marginTop: theme.spacing(12),
@@ -75,9 +100,11 @@ function flattenPages(pages, current = []) {
 
 function MarkdownDocs(props) {
   const {
+    blog,
     classes,
     disableAd,
     disableToc,
+    disableEdit,
     markdown: markdownProp,
     markdownLocation: markdownLocationProp,
     req,
@@ -148,10 +175,16 @@ function MarkdownDocs(props) {
               <Ad />
             </Portal>
           )}
+
           <AppContent disableToc={disableToc} className={classes.root}>
-            <div className={classes.header}>
-              <EditPage markdownLocation={markdownLocation} />
-            </div>
+            {!disableEdit ? (
+              <div className={classes.header}>
+                <EditPage
+                  markdownLocation={markdownLocation}
+                  sourceCodeRootUrl={SOURCE_CODE_ROOT_URL}
+                />
+              </div>
+            ) : null}
             {contents.map((content, index) => {
               if (demos && demoRegexp.test(content)) {
                 let demoOptions;
@@ -198,7 +231,11 @@ function MarkdownDocs(props) {
               }
 
               return (
-                <MarkdownElement className={classes.markdownElement} key={index} text={content} />
+                <MarkdownElement
+                  className={clsx(classes.markdownElement, { [classes.markdownElementBlog]: blog })}
+                  key={index}
+                  text={content}
+                />
               );
             })}
             <footer className={classes.footer}>
@@ -209,6 +246,8 @@ function MarkdownDocs(props) {
                   <div className={classes.pagination}>
                     {prevPage ? (
                       <Button
+                        component={Link}
+                        naked
                         href={prevPage.pathname}
                         size="large"
                         className={classes.pageLinkButton}
@@ -221,6 +260,8 @@ function MarkdownDocs(props) {
                     )}
                     {nextPage.displayNav === false ? null : (
                       <Button
+                        component={Link}
+                        naked
                         href={nextPage.pathname}
                         size="large"
                         className={classes.pageLinkButton}
@@ -241,8 +282,10 @@ function MarkdownDocs(props) {
 }
 
 MarkdownDocs.propTypes = {
+  blog: PropTypes.bool,
   classes: PropTypes.object.isRequired,
   disableAd: PropTypes.bool,
+  disableEdit: PropTypes.bool,
   disableToc: PropTypes.bool,
   markdown: PropTypes.string,
   // You can define the direction location of the markdown file.

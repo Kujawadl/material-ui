@@ -6,7 +6,7 @@ import Container from '@material-ui/core/Container';
 
 const styles = theme => ({
   root: {
-    paddingTop: 80 + 29 + 16,
+    paddingTop: 80 + 16,
     flex: '1 1 100%',
     maxWidth: '100%',
     margin: '0 auto',
@@ -16,7 +16,7 @@ const styles = theme => ({
     },
     [theme.breakpoints.up('lg')]: {
       paddingLeft: theme.spacing(6),
-      paddingRight: theme.spacing(5),
+      paddingRight: theme.spacing(6),
       maxWidth: 'calc(100% - 175px - 240px)',
     },
   },

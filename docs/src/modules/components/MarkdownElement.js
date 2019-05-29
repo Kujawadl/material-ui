@@ -141,6 +141,9 @@ const styles = theme => ({
     '& p code, & ul code, & pre code': {
       fontSize: 14,
     },
+    '& .token.operator': {
+      background: 'transparent',
+    },
     '& h1': {
       ...theme.typography.h2,
       margin: '32px 0 16px',
@@ -167,6 +170,9 @@ const styles = theme => ({
     },
     '& p, & ul, & ol': {
       lineHeight: 1.6,
+    },
+    '& ul': {
+      paddingLeft: 30,
     },
     '& h1, & h2, & h3, & h4': {
       '& code': {
@@ -261,9 +267,6 @@ const styles = theme => ({
     },
     '& thead tr': {
       height: 64,
-    },
-    '& strong': {
-      fontWeight: theme.typography.fontWeightMedium,
     },
     '& blockquote': {
       borderLeft: `5px solid ${theme.palette.text.hint}`,
